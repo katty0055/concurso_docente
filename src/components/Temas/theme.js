@@ -1,6 +1,6 @@
 //definicion del tema de la aplicacion
 import {createTheme} from '@mui/material';
-import { indigo, pink, red, orange, lightBlue, green} from '@mui/material/colors';
+import { indigo, red, orange, lightBlue, green, blue} from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
@@ -13,9 +13,9 @@ const theme = createTheme({
 
     }, 
     secondary: {
-      main: pink['A400'],
-      light: '#F73378',
-      dark: '#AB003C',
+      main: blue[50],
+      light: blue[50],
+      dark: blue[50],
       contrastText:'#FFFFFF',
     },
     error: {
@@ -28,7 +28,7 @@ const theme = createTheme({
       main: '#ed6c02',
       light: orange[500],
       dark: orange[900],
-      contrastText:'#FFFFFF',
+      contrastText:'#000000',
     },
     info: {
       main: lightBlue[700],

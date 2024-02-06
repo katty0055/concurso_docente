@@ -1,8 +1,7 @@
 //componente donde estan las rutas
-import { createBrowserRouter, Route, RouterProvider, Routes} from "react-router-dom";
+import { createBrowserRouter, RouterProvider,} from "react-router-dom";
 import Pagina from "../views/Pagina";
 import Login from "../views/Inicio";
-import PrivateRoute from "../views/Inicio/PrivateRoute";
 
 const router = createBrowserRouter([
     // Definición de rutas
@@ -12,10 +11,7 @@ const router = createBrowserRouter([
     },
     {
         path: 'concurso_docente/',
-        element: <PrivateRoute element={<Routes>
-            <Route path="/" element={<Pagina />} />
-            {/* Agrega otras rutas secundarias aquí si es necesario */}
-          </Routes>} />,    
+        element: <Pagina/>,   
     },    
 ]);
 

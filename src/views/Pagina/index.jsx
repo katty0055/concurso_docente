@@ -1,5 +1,5 @@
 import { Alert, AppBar, Slide, Snackbar, Tooltip, useMediaQuery, } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -19,6 +19,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Link, useNavigate } from 'react-router-dom';
 import ConcursoCard from "../Concursos/ConcursosCard";
 import { Outlet } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -31,24 +32,33 @@ const Pagina = () => {
   const {userId,clearUserId } = useUserData();
   const drawerWidth = 240;
   const navigate= useNavigate();
+  const location = useLocation();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [openAlert, setOpenAlert] = useState(true);
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(matches? {}: {marginLeft: `-${drawerWidth}px`,}),
-    ...(open && {
-        transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-       marginLeft: 0,
-    }),
-  }),
-);
+  useEffect(() => {
+    setIsLoaded(true);
+  }, [location.pathname]); // Asegúrate de que useEffect se vuelva a ejecutar cuando cambia la ubicación
+  
+
+// const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+//   ({ theme, open }) => ({
+//     border:4,
+//     flexGrow: 1,
+//     transition: theme.transitions.create('margin', {
+//       easing: theme.transitions.easing.sharp,
+//       duration: theme.transitions.duration.leavingScreen,
+//     }),
+    // ...(matches? {}: {marginLeft: `-${drawerWidth}px`,}),
+    // ...(open && {
+    //     transition: theme.transitions.create('margin', {
+    //     easing: theme.transitions.easing.easeOut,
+    //     duration: theme.transitions.duration.enteringScreen,
+    //   }),
+    //    marginLeft: 0,
+    // }),
+//   }),
+// );
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -77,9 +87,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     
   };
 
-  function Transition(props) {
-    return <Slide {...props} direction="up" />;
-  }
+  // function Transition(props) {
+  //   return <Slide {...props} direction="up" />;
+  // }
   
   const navLinks = [
     // {
@@ -106,10 +116,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ];
 
   const tituloBarra = <img src={Logo} alt="Logo" style={{ width: 70, height: 'auto', display:'flex', flexShrink: 2 , }} />;
-  
+
+
+if (!isLoaded) {
+  return <div>Cargando...</div>;
+}
   return (
   <>
-    <Box sx={{ display: 'flex', height:"100vh", boxSizing:"border-box", overflow: 'auto',  }}>
+    <Box sx={{ display: 'flex', height:"100vh", boxSizing:"border-box", overflow: 'auto',}}>
       <AppBar position="fixed" open={open} 
         sx={{
           boxShadow: "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 0px 0px 0px rgba(0,0,0,0.12)"}}
@@ -213,30 +227,44 @@ const DrawerHeader = styled('div')(({ theme }) => ({
         }
         </List>
       </Drawer>
-      <Main open={open}>
-      <Snackbar
-        open={!!alertMessage } // Mostrar el Snackbar si hay un mensaje de error o éxito
-        autoHideDuration={4000}
-        onClose={() => setAlertMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Colocar el Snackbar arriba
-        TransitionComponent={Transition}
-        transitionDuration={{
-          enter: 900,  // Duración de la transición al entrar en milisegundos
-          exit: 300,   // Duración de la transición al salir en milisegundos
-        }}
+       <Box component={"div"}
+          style={{
+            flexGrow: 1,
+            transition: theme.transitions.create('margin', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: !matches ? `-${drawerWidth}px` : 0,           
+            ...(open && {
+              transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+              marginLeft: 0,
+            }),
+          }}
+        >
+        
+          <DrawerHeader />
+          {location.pathname === '/concurso_docente/' ? (
+            <>
+                    <Snackbar
+        open={openAlert } 
+        autoHideDuration={2000}
+        onClose={() => setOpenAlert(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       > 
-        <Alert variant="filled" severity= "success" >
-          {alertMessage}    
-        </Alert>
-      </Snackbar> 
-      <DrawerHeader />
-      {location.pathname === '/concurso_docente/' ? (
-              <ConcursoCard />
-            ) : (
-              <Outlet />
-            )}
- 
-      </Main>
+      <Alert variant="filled" severity= "success" >
+                {alertMessage}    
+              </Alert>
+    
+        </Snackbar>
+            <ConcursoCard /></>
+          ) : (
+            <Outlet />
+          )}
+      
+        </Box>
     </Box>     
   </>
   );
