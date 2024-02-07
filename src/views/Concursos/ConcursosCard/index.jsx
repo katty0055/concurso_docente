@@ -13,8 +13,9 @@ import dayjs from 'dayjs';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-
+//Componente que contiene los concursos y un filtro para los mismos
 const ConcursoCard = () =>{
+  //declaracion de constantes
   const {localhost} = useServerStore();
   const apiUrl = `http://${localhost}:8000/concurso/concurso/`;
   const apiUrlTiposConcurso = `http://${localhost}:8000/concurso/tipoconcurso/`;
@@ -30,7 +31,8 @@ const ConcursoCard = () =>{
   const [checkedStates, setCheckedStates] = useState(new Array(estados.length).fill(true));
   const [checkedTypes, setCheckedTypes] = useState(Array(estados.length).fill(true));
 
-
+//  Trae los datos de concurso y los almacena en la variable
+//  concursos, se ejecuta cada vez que la variable apiUrl cambia de valor
   useEffect(() => {
     fetch(apiUrl, {
       method: 'GET',  
@@ -50,17 +52,19 @@ const ConcursoCard = () =>{
     })
     .catch(error => {
       console.error('Error al obtener los datos:', error);
-    });
-       
+    });       
   },[apiUrl]); 
 
-
+  //redirije a postulacion
   const handlePostularClick = (concurso) => {
     concursoDataStore.setConcursoData(concurso);
     console.log("postular")
-    // navigate(`postulacion`);
+    //navigate(`postulacion`);
   };
 
+  //Trae los datos de los tipos de concurso y los almacena en la variable
+  //tipoConcurso, se ejecuta cada vez que la variable apiUrlTiposConcurso
+  //cambia de valor
   useEffect(() => {
     fetch(apiUrlTiposConcurso, {
       method: 'GET',
@@ -82,15 +86,18 @@ const ConcursoCard = () =>{
           });
   },[apiUrlTiposConcurso]); 
     
+  //si todavia no estan definidos los tipos de concursos
+  //aparecera el mensaje cargando en el lugar donde deberia de
+  //decir que tipo de concurso es el que aparece en el card 
   const getDescriptionById = (id) => {
     if (!tiposConcurso) {
-       return 'Cargando...'; 
+      return 'Cargando...'; 
     }
       const tipoConcurso = tiposConcurso.find(tipo => tipo.tipo_concurso_id === id);
       return tipoConcurso ? tipoConcurso.descripcion_tipo_concurso : 'N/E';
   };
 
-
+  //muestra los colores de los estados
   const mostrarEstado = (estado) => {
     switch (estado) {
       case 'CERRADO':
@@ -104,7 +111,7 @@ const ConcursoCard = () =>{
     } 
   };
 
-
+  //muestra el mensaje que debe mostrar el card de acuerdo al estado
   const mostrarMensaje= (estado) => {
     switch (estado) {
       case 'CERRADO':
@@ -118,7 +125,11 @@ const ConcursoCard = () =>{
     }       
   };
            
-
+  //funcion para realizar el filtrado de los concursos
+  //primero verifica que las fechas
+  //luego hace la busqueda por denominacion y por fecha
+  //luego hace el filtro de acuerdo a los estados y a los
+  //tipos de concursos
   const handleSearchClick = () => {
     if (data) {
       validateDates()
@@ -152,7 +163,7 @@ const ConcursoCard = () =>{
     }        
   };
 
-
+  //limpia el filtro 
   const handleClearSearch = () => {
     setSearchTerm("");
     setCheckedStates(new Array(checkedStates.length).fill(true));
@@ -163,36 +174,46 @@ const ConcursoCard = () =>{
     setConcursos(data);
   };
 
-
+  // Función que maneja el toggling del estado en un índice específico del arreglo checkedStates
   const handleToggleEstado = (index) => {
-    const newCheckedStates = [...checkedStates];
-    newCheckedStates[index] = !newCheckedStates[index];
+    // Crea un nuevo arreglo llamado newCheckedStates que es una copia del arreglo checkedStates
+    const newCheckedStates = [...checkedStates];    
+    // Invierte el valor en el índice especificado
+    newCheckedStates[index] = !newCheckedStates[index];    
+    // Si el índice toggleado es el primero (index 0), actualiza todos los valores en newCheckedStates al mismo valor
     if (index === 0) {
       if (newCheckedStates[0]) {
+        // Si el primer valor es verdadero, actualiza todos los valores a verdadero
         newCheckedStates.fill(true);
       } else {
+        // Si el primer valor es falso, actualiza todos los valores a falso
         newCheckedStates.fill(false);
       }
     } else {
+      // Si el índice toggleado no es el primero, verifica si todos los valores en newCheckedStates son verdaderos
       if (newCheckedStates.every((state) => state)) {
+        // Si todos los valores son verdaderos, actualiza el primer valor a falso
         newCheckedStates[0] = false;
       } else if (newCheckedStates.slice(1).every((state) => state)) {
+        // Si todos los valores excepto el primero son verdaderos, actualiza el primer valor a verdadero
         newCheckedStates[0] = true;
-      }else{
+      } else {
+        // Si algunos valores son falsos, actualiza el primer valor a falso
         newCheckedStates[0] = false;
       }
-    }
+    }    
+    // Actualiza el estado con el nuevo arreglo de estados marcados
     setCheckedStates(newCheckedStates);
-  };      
+  };   
 
-
+  //constante para tildar los tipos de concurso
   const handleToggleTypes = (index) => {
     const newCheckedTypes = [...checkedTypes];
     newCheckedTypes[index] = !newCheckedTypes[index];
     setCheckedTypes(newCheckedTypes);    
   };
 
-
+  //valida si las fechas son validas
   const handleDateChange = (date, setDate) => {
     if (date && date.isValid()) {
       setDate(date);
@@ -202,7 +223,8 @@ const ConcursoCard = () =>{
     }
   };
    
-  
+  //muestra un error si no se ingresaron ambas fechas o si la fecha de inicio
+  //es menor a la fecha fin
   const validateDates = () => {
     if (!startDate & !endDate) {
       setError('');

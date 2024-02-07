@@ -95,16 +95,16 @@ const Login = () => {
 
   return (
     <>
-     <Grid item container fixed="true"
-     xs={10} sm={9} md={8} lg={7}
-     justifyContent='center'
-     alignItems="center"
-     height="100vh"
-     sx={{
-        mx: "auto",
-        position: "relative",
-     }}
-     >
+      <Grid item container fixed="true"
+        xs={10} sm={9} md={8} lg={7}
+        justifyContent='center'
+        alignItems="center"
+        height="100vh"
+        sx={{
+            mx: "auto",
+            position: "relative",
+        }}
+      >
         <Snackbar
           open={!!alertMessage } // Mostrar el Snackbar si hay un mensaje de error o éxito
           autoHideDuration={4000}
@@ -112,11 +112,10 @@ const Login = () => {
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Colocar el Snackbar arriba
         >
           <Alert variant="filled" severity= "error">
-            <AlertTitle>{alertMessage}</AlertTitle>
-              
+            <AlertTitle>{alertMessage}</AlertTitle>              
           </Alert>
         </Snackbar> 
-       <Grid item 
+        <Grid item 
           xs={12} sm={11} md={10} lg={9} 
           height={"86%"}
           justifyContent="space-around"
@@ -133,7 +132,7 @@ const Login = () => {
             flexDirection: "column",
             gap:0.5,
             boxSizing:"border-box",
-            }}
+          }}
         >
           <Grid item container
             xs={12} sm={11} md={10} lg={9} 
@@ -148,118 +147,116 @@ const Login = () => {
           >
             <Img src={Logo} alt="Logo" /> 
           </Grid>
-           <Grid item container
-              xs={12} sm={11} md={10} lg={9} 
-              maxHeight={"14%"} 
-              justifyContent="center"
-              alignItems="center"                  
-              sx={{
-                borderColor: "secondary.main",
-              }}    
-            >  
-             <Typography
-                variant="h3"
-                textAlign= "center"
-                color="primary.main"
-                fontWeight= "medium"
-              > 
-                Iniciar Sesión
-              </Typography>                            
-            </Grid> 
-              <Box  
-                component="form"
-                onSubmit={loginHandle}
-                autoComplete="off"        
-                sx={{
-                  height:"60%",
-                  mx:2,
-                  display: "flex",  
-                  flexDirection:"column",     
-                  gap: 0.5,   
-                  width:"80%",                              
-                }}
+          <Grid item container
+            xs={12} sm={11} md={10} lg={9} 
+            maxHeight={"14%"} 
+            justifyContent="center"
+            alignItems="center"                  
+            sx={{
+              borderColor: "secondary.main",
+            }}    
+          >  
+            <Typography
+              variant="h3"
+              textAlign= "center"
+              color="primary.main"
+              fontWeight= "medium"
+            > 
+              Iniciar Sesión
+            </Typography>                            
+          </Grid> 
+          <Box  
+            component="form"
+            onSubmit={loginHandle}
+            autoComplete="off"        
+            sx={{
+              height:"60%",
+              mx:2,
+              display: "flex",  
+              flexDirection:"column",     
+              gap: 0.5,   
+              width:"80%",                              
+            }}
+          >
+            <TextField
+              id="usuario"
+              label="usuario"
+              type="text"
+              variant="outlined"
+              size={window.innerWidth >= 900 ? "medium" : "small"}
+              required 
+              onChange={(e) => {
+                setDocumento(e.target.value)
+              }}                          
+              value={documento}
+              InputProps={{
+                endAdornment: (
+                <InputAdornment position="end">
+                  <PersonIcon fontSize="small"/>
+                </InputAdornment>
+                ),
+              }}                
+            /> 
+            <TextField
+              id="contraseña"
+              label="contraseña"
+              type="password"
+              variant="outlined"
+              size={window.innerWidth >= 900 ? "medium" : "small"}
+              required
+              onChange={(e) => {
+                setPassword(e.target.value)
+              }}  
+              value={password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" >
+                    <KeyIcon fontSize="small"/>
+                  </InputAdornment>
+                ),
+              }}                
+            />   
+              <Button 
+                variant="contained" 
+                color="primary"
+                type="submit"                 
               >
-                <TextField
-                  id="usuario"
-                  label="usuario"
-                  type="text"
-                  variant="outlined"
-                  size={window.innerWidth >= 900 ? "medium" : "small"}
-                  required 
-                  onChange={(e) => {
-                    setDocumento(e.target.value)
-                  }}                          
-                  value={documento}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <PersonIcon fontSize="small"/>
-                      </InputAdornment>
-                    ),
-                  }}                
-                /> 
-                <TextField
-                  id="contraseña"
-                  label="contraseña"
-                  type="password"
-                  variant="outlined"
-                  size={window.innerWidth >= 900 ? "medium" : "small"}
-                  required
-                  onChange={(e) => {
-                    setPassword(e.target.value)
-                  }}  
-                  value={password}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end" >
-                        <KeyIcon fontSize="small"/>
-                      </InputAdornment>
-                    ),
-                  }}                
-                />   
-                  <Button 
-                    variant="contained" 
-                    color="primary"
-                    type="submit"                 
-                  >
-                  <Typography
-                    variant="h6"
-                    textAlign= "center"
-                  >
-                    Confirmar
-                  </Typography>
+                <Typography
+                  variant="h6"
+                  textAlign= "center"
+                >
+                  Confirmar
+                </Typography>
               </Button> 
-              </Box>
-                <Grid item 
-                  xs={12} sm={11} md={10} lg={9} 
-                  maxHeight={"16%"} 
-                  justifyContent={"center"}
-                  sx={{
-                    borderColor: "secondary.main",
-                    display:"flex",
-                    flexDirection:"column",
-                  }}    
-                > 
-                  <Typography
-                    variant="body2"
-                    textAlign= "center"
-                    fontWeight= "regular"
-                  >
-                    Registrarse
-                  </Typography> 
-                  <Typography
-                    variant="body2"
-                    textAlign= "center"
-                    fontWeight= "regular"
-                    onClick={registroHandle}
-                    >
-                    Restablecer contraseña
-                  </Typography> 
-                </Grid>  
-            </Grid>
-     </Grid>
-    
-            
+          </Box>
+          <Grid item 
+            xs={12} sm={11} md={10} lg={9} 
+            maxHeight={"16%"} 
+            justifyContent={"center"}
+            sx={{
+              borderColor: "secondary.main",
+              display:"flex",
+              flexDirection:"column",
+            }}    
+          > 
+            <Typography
+              variant="body2"
+              textAlign= "center"
+              fontWeight= "regular"
+            >
+              Registrarse
+            </Typography> 
+            <Typography
+              variant="body2"
+              textAlign= "center"
+              fontWeight= "regular"
+              onClick={registroHandle}
+            >
+              Restablecer contraseña
+            </Typography> 
+          </Grid>  
+        </Grid>
+      </Grid>            
     </>
   )
 }
